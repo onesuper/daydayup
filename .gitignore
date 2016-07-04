@@ -1,4 +1,5 @@
 config.yaml
 *.md
+!README.md
 !template.md
 *~

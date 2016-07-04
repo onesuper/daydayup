@@ -3,4 +3,5 @@ server:
   name: smtp.partner.outlook.cn
   email: chengyichao@baixing.com
   passwd: 123456
-dl: ['daily@baixing.com']
+dl: 
+  - daily@baixing.com
