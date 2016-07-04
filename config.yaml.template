@@ -5,3 +5,4 @@ server:
   passwd: 123456
 dl: 
   - daily@baixing.com
+  - daily_engineer@baixing.com
