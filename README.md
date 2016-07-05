@@ -1,10 +1,22 @@
+# DayDayUp
+
 ## 开始
 
 ```shell
+# 下载，安装依赖
+$ git clone https://github.com/onesuper/daydayup.git
+$ sudo pip install -r requirements.txt 
+
+# 配置账号和昵称，模板
 $ cp config.yaml.template config.yaml
-$ vi config.yaml   # 配置账号和昵称
-$ ./new_day.py     # 新建今天的日报
-$ ./send_mail.py   # 通过邮件发送日报
+$ vi config.yaml
+$ vi template.md
+
+# 新建今天的日报
+$ ./day.py     
+
+# 通过邮件发送日报
+$ ./day_up.py  
 ```
 
 ## 依赖
@@ -12,3 +24,10 @@ $ ./send_mail.py   # 通过邮件发送日报
 * PyYaml
 * Python-Markdown
 
+
+## TODO
+
+* 集成在一个命令行工具中
+* 模板参数引用。例如：{{ reports.count }}
+* 发送请假的邮件
+* 编译成周报、月报
