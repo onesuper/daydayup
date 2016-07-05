@@ -14,9 +14,11 @@ $ vi template.md
 
 # 新建今天的日报
 $ ./day.py     
+$ ./day.py -f (overwite)
 
 # 通过邮件发送日报
-$ ./day_up.py  
+$ ./day_up.py 
+$ ./day_up.py -v (with preview)
 ```
 
 ## 依赖

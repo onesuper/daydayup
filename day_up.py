@@ -5,7 +5,8 @@ from email.mime.multipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.utils import COMMASPACE,formatdate
 from email import encoders
- 
+
+import sys
 
 def md_to_html(s):
     import markdown
@@ -29,6 +30,35 @@ def send_mail(server, fro, to, subject, text):
     smtp.sendmail(fro, to, msg.as_string()) 
     smtp.close()
 
+def yes_or_no(question, default="no"):
+    valid = {"yes": True, "y": True, "ye": True,
+             "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = raw_input().lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' "
+                             "(or 'y' or 'n').\n")
+
+def preview(content):
+    if len(sys.argv) > 1 and sys.argv[1] == '-v':
+        sys.stdout.write(content)
+        sys.stdout.write('\n\n')
+
+
 with open('config.yaml') as f:
     import yaml
     dataMap = yaml.safe_load(f)
@@ -38,4 +68,7 @@ with open('config.yaml') as f:
 
     with open(str(date.today()) + '.md') as f:
         content = md_to_html('\n'.join(f.readlines()))
-        send_mail(dataMap['server'], dataMap['server']['email'], dataMap['dl'], subject, content)
+        preview(content)
+        sys.stdout.write('to: '+ ','.join(dataMap['dl']) + '\n')
+        if yes_or_no('r u sure?'):
+            send_mail(dataMap['server'], dataMap['server']['email'], dataMap['dl'], subject, content)
