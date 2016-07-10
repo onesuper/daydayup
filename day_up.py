@@ -61,14 +61,14 @@ def preview(content):
 
 with open('config.yaml') as f:
     import yaml
-    dataMap = yaml.safe_load(f)
+    conf = yaml.safe_load(f)
 
     from datetime import date
-    subject = '-'.join(['DailyReport', str(date.today()), dataMap['nickname']])
+    subject = '-'.join(['DailyReport', str(date.today()), conf['nickname']])
 
     with open(str(date.today()) + '.md') as f:
         content = md_to_html('\n'.join(f.readlines()))
         preview(content)
-        sys.stdout.write('to: '+ ','.join(dataMap['dl']) + '\n')
+        sys.stdout.write('to: '+ ','.join(conf['dl']) + '\n')
         if yes_or_no('r u sure?'):
-            send_mail(dataMap['server'], dataMap['server']['email'], dataMap['dl'], subject, content)
+            send_mail(conf['server'], conf['server']['email'], conf['dl'], subject, content)

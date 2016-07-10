@@ -30,6 +30,8 @@ $ ./day_up.py -v (with preview)
 ## TODO
 
 * 集成在一个命令行工具中
-* 模板参数引用。例如：{{ reports.count }}
+* 模板参数引用。例如：{{ reports.count }} 
 * 发送请假的邮件
 * 编译成周报、月报
+* 从 github 同步当日的 commit
+* 支持通过 {{ name#1 }} 直接生成一个 github 的 issue link

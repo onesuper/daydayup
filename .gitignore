@@ -3,3 +3,4 @@ config.yaml
 !README.md
 !template.md
 *~
+*.pyc
