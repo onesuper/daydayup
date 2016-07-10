@@ -13,5 +13,5 @@
 *
 
 ---
-由 [daydayup](https://github.com/onesuper/daydayup) 发送
+ +{{ report.files | length }}d via [daydayup](https://github.com/onesuper/daydayup)
 
