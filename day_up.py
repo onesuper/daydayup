@@ -65,7 +65,7 @@ def string_from_file():
   from datetime import date
   mdfile = str(date.today()) + '.md'
   with open(mdfile) as f:
-    return '\n'.join(f.readlines())
+    return '\n'.join(f.readlines()).decode('utf-8')
 
 def get_config(name):
   with open(name) as f:
@@ -86,5 +86,5 @@ if __name__ == '__main__':
   mail_to   = conf['dl']
 
   if yes_or_no('to: '+ ','.join(mail_to) + '\n'+ 'r u sure?'):
-    send_mail(conf['server'], mail_from, mail_to, subject, content)
+    send_mail(conf['server'], mail_from, mail_to, subject, html)
 
