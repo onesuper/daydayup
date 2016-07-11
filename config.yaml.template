@@ -6,3 +6,7 @@ server:
 dl: 
   - daily@baixing.com
   - daily_engineer@baixing.com
+github:
+  enable: false
+  username: onesuper
+  password: 123456

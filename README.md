@@ -2,7 +2,7 @@
 
 Daydayup 是一个给 Baixingers 用 Markdown 来编写（发送）日报的简单工具
 
-## 开始
+## 快速开始
 
 ```shell
 # 下载，安装依赖
@@ -22,7 +22,7 @@ $ ./day_up.py
 $ ./day_up.py -v (with preview)
 ```
 
-## 参数
+## 模板参数
 
 Daydayup 提供了一些参数可以在日报模板（template.md）中引用：
 
@@ -30,6 +30,25 @@ Daydayup 提供了一些参数可以在日报模板（template.md）中引用：
 
 
 * 所有日报文件列表：`{{ report.files }} `
+* github 的最近提交：`{% for commit in commits %}`
+* 每次提交的属性: `{{ commit.url }}`, `{{ commit.msg }}`, `{{ commit.sha}}`
+
+## 配置
+
+```yaml
+nickname: onesuper
+server:
+  name: smtp.partner.outlook.cn
+  email: chengyichao@baixing.com
+  passwd: 123456
+dl:
+  - daily@baixing.com
+  - daily_engineer@baixing.com
+github:
+  enable: false
+  username: onesuper
+  password: 123456
+```
 
 ## 依赖
 
@@ -45,5 +64,5 @@ Daydayup 提供了一些参数可以在日报模板（template.md）中引用：
 * ~~模板参数引用。例如：{{ reports.count }}~~ 
 * 发送请假的邮件
 * 编译成周报、月报
-* 从 github 同步当日的 commit
+* ~~从 github 同步当日的 commit~~
 * 支持通过 {{ name#1 }} 直接生成一个 github 的 issue link
