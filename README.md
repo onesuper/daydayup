@@ -17,6 +17,10 @@ $ vi config.yaml
 $ ./day.py     
 $ ./day.py -f (overwite)
 
+# day.py 会在当前目录下生成格式为 yyyy-mm-dd.md 的文件
+# 使用 Markdown 编辑它
+$ emacs 2016-01-01.md
+
 # 通过邮件发送日报
 $ ./day_up.py 
 $ ./day_up.py -v (with preview)
@@ -60,9 +64,12 @@ github:
 ## TODO
 
 * 集成在一个命令行工具中
-* 打包
+* setup.py 打包
 * ~~模板参数引用。例如：{{ reports.count }}~~ 
 * 发送请假的邮件
 * 编译成周报、月报
 * ~~从 github 同步当日的 commit~~
 * 支持通过 {{ name#1 }} 直接生成一个 github 的 issue link
+* 支持 Python3
+* 接收别人的日报，并提取出@自己的条目 (via Billy)
+* 支持在日报中 @someone

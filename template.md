@@ -1,18 +1,16 @@
+### Done
 
-## Done
 *
-*
-*
-
-## Todo
 *
 *
 
-## Thoughts
+### Thoughts
+
 *
 *
 
-### Commits
+{% if commit %} ### Github {% endif %}
+
 {% for commit in commits %} * [{{commit.sha}}]({{commit.url}}) {{ commit.msg}} 
 
 {% endfor %}
