@@ -11,6 +11,8 @@ from argparse import ArgumentParser
 from datetime import date
 TODAY_REPORT_FNAME = str(date.today()) + '.md'
 
+BAIXING_MAIL_SUFFIX = '@baixing.com'
+
 import yaml
 with open('config.yaml') as f:
   CONF = yaml.safe_load(f)
@@ -47,14 +49,12 @@ def send_mail(server, fro, to, subject, text):
   assert type(server) == dict 
   assert type(to) == list 
 
-  tos = COMMASPACE.join(to)
-
-  prompt = '一封主题为"' + subject.encode('utf-8') + '"的邮件将发送给 '+ tos
+  prompt = '一封主题为"' + subject.encode('utf-8') + '"的邮件将发送给\n * '+ '\n * '.join(to).encode('utf-8')
   if yes_or_no(prompt + '\n你真的确定要发送吗?'):
     msg = MIMEMultipart() 
     msg['From'] = fro 
-    msg['Subject'] = subject 
-    msg['To'] = tos
+    msg['Subject'] = subject
+    msg['To'] = COMMASPACE.join(to)
     msg['Date'] = formatdate(localtime=True) 
     msg.attach(MIMEText(text, 'html', 'utf-8'))
 
@@ -142,7 +142,14 @@ class DayDayUp(object):
     # 主题 
     subject = '-'.join(['DailyReport', str(date.today()), CONF['nickname']])
     mail_from = CONF['server']['email']
-    mail_to   = CONF['dl']
+    mail_to   = []
+    if CONF['mail_list']['daily'] is not None:
+      mail_to += CONF['mail_list']['daily']
+    if CONF['mail_list']['common'] is not None:
+      mail_to += CONF['mail_list']['common']
+
+    if 'at' in self.opts:
+      mail_to += [ x+BAIXING_MAIL_SUFFIX for x in self.opts['at'].split(',')]
 
     send_mail(CONF['server'], mail_from, mail_to, subject, html)
 
@@ -168,6 +175,7 @@ class DayDayUp(object):
     send.set_defaults(func = self._send)
     send.add_argument('--preview', action = 'store_true', help = '预览发送的内容')
     send.add_argument('--file', '-f', default = TODAY_REPORT_FNAME, help = '指定要发送的文件名')
+    send.add_argument('--at', '-a', help = '要抄送的联系人 (邮箱前缀)')
 
     github = subparser.add_parser('github', description = '显示Github最近记录')
     github.set_defaults(func = self._github)

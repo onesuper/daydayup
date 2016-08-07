@@ -3,9 +3,12 @@ server:
   name: smtp.partner.outlook.cn
   email: chengyichao@baixing.com
   passwd: 123456
-dl: 
-  - daily@baixing.com
-  - daily_engineer@baixing.com
+mail_list:
+  common:
+    - chengyichao@baixing.com
+  daily:
+    - daily@baixing.com
+    - daily_engineer@baixing.com
 github:
   enable: false
   username: onesuper
