@@ -9,10 +9,8 @@
 *
 *
 
-{% if commit %} ### Github {% endif %}
-
+{% if commits %} ### Github {% endif %}
 {% for commit in commits %} * [{{commit.sha}}]({{commit.url}}) {{ commit.msg}} 
-
 {% endfor %}
 
 ---
