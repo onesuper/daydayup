@@ -1,41 +1,52 @@
 # DayDayUp
 
-Daydayup 是一个给 Baixingers 用 Markdown 来编写（发送）日报的简单工具
+Daydayup 是一个给 Baixingers 发送日报的工具，它可以让你用 Markdown 来书写日报
 
-## 快速开始
+## 使用
 
-```shell
-# 下载，安装依赖
-$ git clone https://github.com/onesuper/daydayup.git
-$ sudo pip install -r requirements.txt 
+从 Pip 安装：
 
-# 配置账号和昵称
+```
+$ pip install daydayup
+```
+
+从源代码安装：
+
+```
+$ git clone <git clone URL>
+$ cd daydayup
+$ python setup.py install
+```
+
+配置你的账号、昵称和邮件账号
+
+```
 $ cp config.yaml.template config.yaml
 $ vi config.yaml
+```
 
-# 新建今日日报
-$ ./day.py     
-$ ./day.py -f (overwite)
+创建今天的日报
 
-# day.py 会在当前目录下生成格式为 yyyy-mm-dd.md 的文件
-# 使用 Markdown 编辑它
-$ emacs 2016-01-01.md
+```
+$ daydayup new
+```
 
-# 通过邮件发送日报
-$ ./day_up.py 
-$ ./day_up.py -v (with preview)
+上面这条命令会在当前目录下生成 `yyyy-mm-dd.md` 的日报文件，用你喜欢的 markdown 编辑器编辑它，编辑完毕以后使用如下命令发送邮件
+
+```
+$ daydayup send
 ```
 
 ## 模板参数
 
-Daydayup 提供了一些参数可以在日报模板（template.md）中引用：
+Daydayup 提供了一些默认参数可以在模板（template.md）中引用：
 
 * 所有日报文件总数：`{{ report.files | length}} `
 
 
 * 所有日报文件列表：`{{ report.files }} `
 * github 的最近提交：`{% for commit in commits %}`
-* 每次提交的属性: `{{ commit.url }}`, `{{ commit.msg }}`, `{{ commit.sha}}`
+* github commit: `{{ commit.url }}`, `{{ commit.msg }}`, `{{ commit.sha}}`
 
 ## 配置
 
@@ -63,13 +74,12 @@ github:
 
 ## TODO
 
-* 集成在一个命令行工具中
-* setup.py 打包
+* ~~命令行工具集成~~
+* ~~setup.py 打包~~
 * ~~模板参数引用。例如：{{ reports.count }}~~ 
 * 发送请假的邮件
 * 编译成周报、月报
 * ~~从 github 同步当日的 commit~~
-* 支持通过 {{ name#1 }} 直接生成一个 github 的 issue link
+* 支持通过 project#1 直接生成一个 github 的 issue link
 * 支持 Python3
-* 接收别人的日报，并提取出@自己的条目 (via Billy)
 * 支持在日报中 @someone

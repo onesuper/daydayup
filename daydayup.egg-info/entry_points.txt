@@ -1,0 +1,3 @@
+[console_scripts]
+daydayup = daydayup.cli:CLI
+

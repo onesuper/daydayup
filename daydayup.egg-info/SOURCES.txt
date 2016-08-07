@@ -1,0 +1,13 @@
+setup.py
+daydayup/__init__.py
+daydayup/cli.py
+daydayup/core.py
+daydayup/exception.py
+daydayup/github.py
+daydayup.egg-info/PKG-INFO
+daydayup.egg-info/SOURCES.txt
+daydayup.egg-info/dependency_links.txt
+daydayup.egg-info/entry_points.txt
+daydayup.egg-info/not-zip-safe
+daydayup.egg-info/requires.txt
+daydayup.egg-info/top_level.txt
