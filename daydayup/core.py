@@ -69,7 +69,7 @@ def send_mail(server, fro, to, subject, text):
 def get_github_commits(github_id, github_password):
   from github import GitHub
   gh = GitHub(username=github_id, password=github_password)
-  sys.stderr.write('fetch data from github...\n')
+  sys.stderr.write('fetching data from github...\n')
   events = gh.users(github_id).events.get()
   commits = []
   for e in events:
@@ -100,9 +100,8 @@ class DayDayUp(object):
     self.opts = self._get_opts(args)
     self.opts['func']()
 
-  """今日生成日报"""
   def _new(self):
-
+    """生成日报"""
     outf = File(self.opts['output'])
     if outf.exists:
       if self.opts['force']:
@@ -125,10 +124,10 @@ class DayDayUp(object):
     content = render_template(self.opts['template'], {'report': report, 'commits': commits})
     outf.content = content
     outf.mk()
-    sys.stderr.write('请认真编辑今天的日报: '+ str(outf) + '\n') 
+    sys.stderr.write('请开心地编辑今天的日报: '+ str(outf) + '\n') 
           
-  """发送今日日报"""  
   def _send(self):
+    """发送今日日报"""  
     inf = File(self.opts['file'])
 
     import markdown
@@ -147,6 +146,11 @@ class DayDayUp(object):
 
     send_mail(CONF['server'], mail_from, mail_to, subject, html)
 
+  def _github(self):
+    """显示Github最近记录"""  
+    for commit in get_github_commits(CONF['github']['username'], CONF['github']['password']):
+      sys.stdout.write(commit['msg']+'\n')
+
   def _get_opts(self, args):
     opts = {}
     parser = ArgumentParser()
@@ -154,18 +158,19 @@ class DayDayUp(object):
     parser.add_argument('-v', '--version', action = 'version', version = '{0}'.format(__version__),
                         help = 'show %(prog)s\'s version')
     
-    new = subparser.add_parser('new')
+    new = subparser.add_parser('new', description = '生成日报')
     new.set_defaults(func = self._new)
     new.add_argument('--force', '-f', action = 'store_true', help = '覆盖已经存在的日报')
     new.add_argument('--template', '-t', default = 'daily.md', help = '指定日报的模板')
-    new.add_argument('--output', '-o', default = TODAY_REPORT_FNAME, help = '要生成的日报文件')
+    new.add_argument('--output', '-o', default = TODAY_REPORT_FNAME, help = '要生成的文件名')
 
-
-    send = subparser.add_parser('send')
+    send = subparser.add_parser('send', description = '发送日报')
     send.set_defaults(func = self._send)
     send.add_argument('--preview', action = 'store_true', help = '预览发送的内容')
-    send.add_argument('--file', '-f', default = TODAY_REPORT_FNAME, help = '指定要发送的文件')
+    send.add_argument('--file', '-f', default = TODAY_REPORT_FNAME, help = '指定要发送的文件名')
 
+    github = subparser.add_parser('github', description = '显示Github最近记录')
+    github.set_defaults(func = self._github)
 
     # process the opts
     for option, value in vars(parser.parse_args(args)).iteritems():
