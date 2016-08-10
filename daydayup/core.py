@@ -1,3 +1,5 @@
+
+
 # -*- coding: UTF-8 -*-
 
 from daydayup import __version__
@@ -130,8 +132,11 @@ class DayDayUp(object):
     """发送今日日报"""  
     inf = File(self.opts['file'])
 
-    import markdown
-    html = markdown.markdown(inf.content)
+    if (str(inf).endswith('.md')):
+      import markdown
+      html = markdown.markdown(inf.content)
+    else:
+      html = inf.content
 
     if self.opts['preview']:
       sys.stdout.write(html)
@@ -139,14 +144,23 @@ class DayDayUp(object):
     else:
       sys.stdout.write('友情提示：使用 --preview 检查一遍错别字哦 ^_^\n')
 
-    # 主题 
-    subject = '-'.join(['DailyReport', str(date.today()), CONF['nickname']])
+    # 主题
+    if 'subject' in self.opts:
+      subject = self.opts['subject']
+    else:
+      subject = '-'.join(['DailyReport', str(date.today()), CONF['nickname']])
+
     mail_from = CONF['server']['email']
-    mail_to   = []
-    if CONF['mail_list']['daily'] is not None:
-      mail_to += CONF['mail_list']['daily']
-    if CONF['mail_list']['common'] is not None:
-      mail_to += CONF['mail_list']['common']
+
+
+    if 'to' in self.opts:
+      mail_to = [ x+BAIXING_MAIL_SUFFIX for x in self.opts['to'].split(',')]
+    else:
+      mail_to   = []
+      if CONF['mail_list']['daily'] is not None:
+        mail_to += CONF['mail_list']['daily']
+      if CONF['mail_list']['common'] is not None:
+        mail_to += CONF['mail_list']['common']
 
     if 'at' in self.opts:
       mail_to += [ x+BAIXING_MAIL_SUFFIX for x in self.opts['at'].split(',')]
@@ -175,7 +189,9 @@ class DayDayUp(object):
     send.set_defaults(func = self._send)
     send.add_argument('--preview', action = 'store_true', help = '预览发送的内容')
     send.add_argument('--file', '-f', default = TODAY_REPORT_FNAME, help = '指定要发送的文件名')
-    send.add_argument('--at', '-a', help = '要抄送的联系人 (邮箱前缀)')
+    send.add_argument('--subject', '-s', help = '主题')
+    send.add_argument('--to', '-t', help = '收件人')
+    send.add_argument('--at', '-a', help = '额外抄送的人')
 
     github = subparser.add_parser('github', description = '显示Github最近记录')
     github.set_defaults(func = self._github)
